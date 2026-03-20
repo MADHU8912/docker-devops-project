@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/YOUR_USERNAME/docker-devops-project.git'
+                git branch: 'main', url: 'https://github.com/MADHU8912/docker-devops-project.git'
             }
         }
 
@@ -28,8 +28,8 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                bat 'docker rm -f devops-container || exit 0'
-                bat 'docker run -d --name devops-container -p 8081:80 devops-docker-site'
+                bat 'docker rm -f devops-container >nul 2>&1 || exit /b 0'
+                bat 'docker run -d --name devops-container -p 8082:80 devops-docker-site'
             }
         }
 
