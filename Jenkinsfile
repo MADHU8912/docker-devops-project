@@ -4,32 +4,40 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/YOUR_USERNAME/docker-devops-project.git'
+                checkout scm
+            }
+        }
+
+        stage('Check Files') {
+            steps {
+                bat 'dir'
+            }
+        }
+
+        stage('Check Docker') {
+            steps {
+                bat 'docker --version'
+                bat 'docker ps'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t devops-docker-site .'
+                bat 'docker build -t ats-site .'
             }
         }
 
         stage('Run Container') {
             steps {
-                bat 'docker run -d -p 8080:80 devops-docker-site'
+                bat 'docker rm -f ats-container || exit 0'
+                bat 'docker run -d -p 8080:80 --name ats-container ats-site'
             }
         }
 
         stage('Build Report') {
             steps {
-                bat 'echo Build Success > build-report.txt'
+                echo 'Build and deployment completed successfully'
             }
         }
-    }
-}
-stage('Check Docker') {
-    steps {
-        bat 'docker --version'
-        bat 'docker ps'
     }
 }
