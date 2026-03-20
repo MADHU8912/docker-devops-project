@@ -41,3 +41,9 @@ pipeline {
         }
     }
 }
+stage('Run Container') {
+    steps {
+        bat 'docker rm -f ats-container || exit 0'
+        bat 'docker run -d --name ats-container -p 8080:80 ats-site'
+    }
+}
